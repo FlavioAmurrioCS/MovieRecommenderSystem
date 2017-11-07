@@ -15,7 +15,7 @@ public class Miner {
 
 
     public static void main(String[] args) {
-        
+        //Comment
     }
 
 }
