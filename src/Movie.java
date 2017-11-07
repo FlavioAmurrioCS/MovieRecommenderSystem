@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * Movie
@@ -10,7 +11,9 @@ public class Movie {
     String directorId; // Director director;
     HashSet<String> genreSet; // List of Genre(genre)
     HashSet<Integer> tagSet; // List of Movie Tags(tagID)
-    HashMap<String, Double> actorRank; // List of Actors (actor_id, rank) normalize the rank
+    // HashMap<String, Double> actorRank; // List of Actors (actor_id, rank) normalize the rank
+    // ArrayList<ActorPair> actorList;
+    TreeSet<ActorPair> actorTree;
     HashMap<Integer, Double> userRating; // List of user and their ratings
     HashMap<Integer, Double> userTag; // (tagID, weight) count and then normalize
 
@@ -34,16 +37,25 @@ public class Movie {
         tagSet.add(tagId);
     }
 
-    public void addActor(String actorId, double ranking) {
-        if (actorRank == null)
-            actorRank = new HashMap<>();
-        actorRank.put(actorId, ranking);
+    public void addActor(String actorID, int rank) {
+        if (actorTree == null)
+            actorTree = new TreeSet<>();
+        actorTree.add(new ActorPair(actorID, rank));
     }
 
     public void addUserRating(int userId, double rating) {
         if (userRating == null)
             userRating = new HashMap<>();
         userRating.put(userId, rating);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("MovieID: " + this.movieId + "\n");
+        sb.append("DirectorID: " + this.directorId + "\n");
+        sb.append("Genres: " + genreSet.toString()+ "\n");
+        sb.append("Actor List: " + actorTree.toString() + "\n");
+        return sb.toString();
     }
 
 }
