@@ -1,6 +1,8 @@
 /**
  * Miner
  */
+import java.util.*;
+
 public class Miner {
 
     public static final String TESTFILE = "./res/additional_files/./res/additional_files/test.dat"; //userID,movieID  75,653
@@ -12,6 +14,8 @@ public class Miner {
     public static final String MOVIE_TAGS_FILE = "./res/additional_files/movie_tags.dat"; //movieID,tagID,tagWeight   1,7,1
 
     public static final String USER_TAGGED_MOVIES_FILE = "./res/additional_files/user_taggedmovies.dat"; //userID,movieID,tagID    75,353,5290
+
+    // HashMap<Integer, Movie>
 
 
     public static void main(String[] args) {

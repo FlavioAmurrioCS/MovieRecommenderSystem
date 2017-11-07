@@ -1,6 +1,8 @@
 /**
  * User
  */
+import java.util.*;
+
 public class User {
 
     int userId;
