@@ -16,7 +16,7 @@ public class ProgressBar {
         if (perc != this.lastPrint) {
             long remainingTime = remainingTime(perc);
             lastPrint = perc;
-            System.out.print("\r" + barMaker(perc) + " " + timeToString(remainingTime));
+            System.out.print("\r" + barMaker(perc) + " " + timeToString(remainingTime) + "      ");
         }
         if (i == this.size - 1) {
             System.out.println();

@@ -19,7 +19,7 @@ public class Tag {
         movieSet.add(movieID);
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(Miner.TOP);
         sb.append("Tag: " + this.tagID + " " + Miner.tagList.get(this.tagID) + "\n");

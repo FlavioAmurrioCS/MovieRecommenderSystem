@@ -1,3 +1,4 @@
+
 /**
  * User
  */
@@ -16,7 +17,7 @@ public class User {
         movieMap.put(movieID, rating);
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(Miner.TOP);
         sb.append("UserID: " + this.userID + "\n");

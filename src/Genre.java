@@ -1,14 +1,14 @@
+
 /**
  * Genre
  */
 
 import java.util.*;
 
-
 public class Genre {
 
     String genreID;
-    HashSet<Integer> movieSet;  //List of Movies
+    HashSet<Integer> movieSet; //List of Movies
 
     public Genre(String genreID) {
         this.genreID = genreID;
@@ -21,7 +21,7 @@ public class Genre {
         movieSet.add(movieID);
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(Miner.TOP);
         sb.append("Genre: " + this.genreID + "\n");
