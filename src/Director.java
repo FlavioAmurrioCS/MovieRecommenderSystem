@@ -20,4 +20,13 @@ public class Director {
         }
         movieSet.add(movieId);
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(Miner.TOP);
+        sb.append("DirectorID: " + this.directorId + "\n");
+        sb.append("Movie List: " + this.movieSet.toString() + "\n");
+        sb.append(Miner.BOTTOM);
+        return sb.toString();
+    }
 }

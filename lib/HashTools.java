@@ -205,7 +205,7 @@ public class HashTools {
         return sum;
     }
 
-    public static <K> double cosineSimilarity(HashMap<K, Double> a, HashMap<K, Double> b){
+    public static <K> double cosineSimilarity(HashMap<K, Double> a, HashMap<K, Double> b) {
         return 0;
     }
 
@@ -224,6 +224,13 @@ public class HashTools {
                 map.put(key, sum / size);
         }
         return map;
+    }
+
+    public static double average(HashMap<?, Double> hMap) {
+        double sum = 0;
+        for (double d : hMap.values())
+            sum += d;
+        return sum / (double) hMap.size();
     }
 
     public static <K> HashMap<K, Double> meanHash(ArrayList<HashMap<K, Double>> hList) {
@@ -250,8 +257,7 @@ public class HashTools {
         return keySet;
     }
 
-    public static <K> String toString(HashMap<K, Double> hMap, Collection<K> c)
-    {
+    public static <K> String toString(HashMap<K, Double> hMap, Collection<K> c) {
         // TOOD
         return "";
     }

@@ -1,33 +1,30 @@
-/**
- * Genre
- */
-
 import java.util.*;
 
+/**
+ * Tag
+ */
 
-public class Genre {
+public class Tag {
 
-    String genreID;
-    HashSet<Integer> movieSet;  //List of Movies
+    int tagID;
+    HashSet<Integer> movieSet;
 
-    public Genre(String genreID) {
-        this.genreID = genreID;
+    public Tag(int tagID) {
+        this.tagID = tagID;
     }
 
     public void addMovie(int movieID) {
-        if (movieSet == null) {
+        if (movieSet == null)
             movieSet = new HashSet<>();
-        }
         movieSet.add(movieID);
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(Miner.TOP);
-        sb.append("Genre: " + this.genreID + "\n");
+        sb.append("Tag: " + this.tagID + " " + Miner.tagList.get(this.tagID) + "\n");
         sb.append("Movie List: " + this.movieSet.toString() + "\n");
         sb.append(Miner.BOTTOM);
         return sb.toString();
     }
-
 }

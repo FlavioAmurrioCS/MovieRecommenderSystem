@@ -15,12 +15,11 @@ public class ActorPair implements Comparable<ActorPair> {
         return this.rank - ap.rank;
     }
 
-    public boolean equals(ActorPair ap)
-    {
+    public boolean equals(ActorPair ap) {
         return this.actorID.equals(ap.actorID);
     }
 
-    public String toString(){
+    public String toString() {
         return this.actorID;
     }
 }
