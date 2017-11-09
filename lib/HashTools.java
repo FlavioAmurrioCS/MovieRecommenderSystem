@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Calc
@@ -149,22 +150,34 @@ public class HashTools {
 
     // ############################### HashMap Set Functions ###############################
 
+    public static <K> HashSet<K> union(Set<K> a, Set<K> b) {
+        HashSet<K> keySet = new HashSet<>(a);
+        keySet.addAll(b);
+        return keySet;
+    }
+
     public static <K> HashSet<K> union(HashMap<K, ?> a, HashMap<K, ?> b) {
-        HashSet<K> keySet = new HashSet<>(a.keySet());
-        keySet.addAll(b.keySet());
+        return union(a.keySet(), b.keySet());
+    }
+
+    public static <K> HashSet<K> intersection(Set<K> a, Set<K> b) {
+        HashSet<K> keySet = new HashSet<>(a);
+        keySet.retainAll(b);
         return keySet;
     }
 
     public static <K> HashSet<K> intersection(HashMap<K, ?> a, HashMap<K, ?> b) {
-        HashSet<K> keySet = new HashSet<>(a.keySet());
-        keySet.retainAll(b.keySet());
+        return intersection(a.keySet(), b.keySet());
+    }
+
+    public static <K> HashSet<K> exclusiveOr(Set<K> a, Set<K> b) {
+        HashSet<K> keySet = new HashSet<>(union(a, b));
+        keySet.removeAll(intersection(a, b));
         return keySet;
     }
 
     public static <K> HashSet<K> exclusiveOr(HashMap<K, ?> a, HashMap<K, ?> b) {
-        HashSet<K> keySet = new HashSet<>(a.keySet());
-        keySet.removeAll(b.keySet());
-        return keySet;
+        return exclusiveOr(a.keySet(), b.keySet());
     }
 
     public static <K> HashMap<K, ?> removeKeys(HashMap<K, ?> a, HashSet<K> keys) {
@@ -206,7 +219,31 @@ public class HashTools {
     }
 
     public static <K> double cosineSimilarity(HashMap<K, Double> a, HashMap<K, Double> b) {
-        return 0;
+        double aSumSquare = 0;
+        double bSumSquare = 0;
+        for (double d : a.values())
+            aSumSquare += (d * d);
+        for (double d : b.values())
+            bSumSquare += (d * d);
+        aSumSquare = Math.sqrt(aSumSquare);
+        bSumSquare = Math.sqrt(bSumSquare);
+        double proSum = 0;
+        HashSet<K> union = union(a, b);
+        for (K key : union)
+            proSum += a.get(key) * b.get(key);
+        return proSum / (aSumSquare * bSumSquare);
+    }
+
+    public static <K> double jaccardSimilarity(Set<K> a, Set<K> b) {
+        if (a.size() == 0 && b.size() == 0)
+            return 1;
+        double intersection = intersection(a, b).size();
+        double union = union(a, b).size();
+        return intersection / union;
+    }
+
+    public static <K> double jaccardSimilarity(HashMap<K, Double> a, HashMap<K, Double> b) {
+        return jaccardSimilarity(a.keySet(), b.keySet());
     }
 
     public static <K> HashMap<K, Double> avgHash(ArrayList<HashMap<K, Double>> hList) {

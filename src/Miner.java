@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Set;
 
 public class Miner {
 
@@ -29,10 +31,31 @@ public class Miner {
     public static HashMap<Integer, String> tagList = new HashMap<>(17650);
     public static HashMap<Integer, User> userMap = new HashMap<>(2850);
 
+    public static ArrayList<User> testList = new ArrayList<>();
+
     public static String TOP = "\n---------------------------------------------------------------------\n";
     public static String BOTTOM = "---------------------------------------------------------------------\n";
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
+
+        // stepping();
+
+
+        HardWorker hw1 = new HardWorker("1");
+        HardWorker hw2 = new HardWorker("2");
+        HardWorker hw3 = new HardWorker("3");
+        HardWorker hw4 = new HardWorker("4");
+        Thread t1 = new Thread(hw1);
+        Thread t2 = new Thread(hw2);
+        Thread t3 = new Thread(hw3);
+        Thread t4 = new Thread(hw4);
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+    }
+
+    public static void stepping(){
         Timer timer = new Timer();
         step1();
         timer.lap("Step 1");
@@ -47,7 +70,7 @@ public class Miner {
         step6();
         timer.lap("Step 6");
         timer.time();
-        menu();
+        // menu();
     }
 
     public static void step1() {
@@ -164,6 +187,13 @@ public class Miner {
             pb.update(count);
         }
         sc.close();
+    }
+
+    public static void mine()
+    {
+        Scanner sc = Tools.fileReader(TESTFILE);
+        sc.nextLine();
+        String 
     }
 
     public static Director addDirectorMap(String directorId) {

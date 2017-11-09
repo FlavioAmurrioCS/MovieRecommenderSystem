@@ -2,6 +2,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+import jdk.nashorn.internal.ir.ReturnNode;
+
 /**
  * Movie
  */
@@ -69,4 +71,31 @@ public class Movie {
         return sb.toString();
     }
 
+    public boolean equals(Movie movie) {
+        return this.movieId == movie.movieId;
+    }
+
+    private double genreSimilarity(Movie movie) {
+        // return HashTools.cosineSimilarity(this.genreSet, movie.genreSet);
+        return HashTools.jaccardSimilarity(this.genreSet, movie.genreSet);
+    }
+
+    // private double tagSimilarity(Movie movie) {
+    //     return HashTools.cosineSimilarity(this.tagSet, movie.tagSet);
+    //     // return HashTools.jaccardSimilarity(this.tagSet, movie.tagSet);
+    // }
+
+    private double directorSimilarity(Movie movie) {
+        return this.directorId.equals(movie.directorId) ? 1 : 0;
+    }
+
+    public double similarity(Movie movie) {
+        if (this.equals(movie))
+            return 1;
+        double dScore = directorSimilarity(movie);
+        double gScore = this.genreSimilarity(movie);
+        // double tScore = this.tagSimilarity(movie);
+
+        return (dScore * 0.20) + (gScore * 0.80);
+    }
 }
