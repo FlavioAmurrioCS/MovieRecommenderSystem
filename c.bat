@@ -1,2 +1,2 @@
 cls
-javac -d obj src/*.java lib/*.java
+javac -d obj src/*.java lib/*.java -Xlint

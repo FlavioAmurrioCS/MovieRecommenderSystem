@@ -4,6 +4,10 @@ import java.lang.reflect.Constructor;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
+import java.util.Random;
+import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.List;
 
 /**
  * WorkEnv
@@ -11,6 +15,17 @@ import java.io.File;
 public class Tools {
 
     public static boolean SHOW_LOG = false;
+
+    // public static ArrayList<Pair> syncList = new ArrayList<>();
+    public static CopyOnWriteArrayList<Pair> syncList = new CopyOnWriteArrayList<Pair>();
+
+    public static synchronized void syncInsert(int index, double score){
+        syncList.add(new Pair(index, score));
+    }
+
+    public static void tittleMaker(String str) {
+        System.out.println("-----------------------------" + str + "-----------------------------");
+    }
 
     public static PrintWriter fileWriter(String filename) {
         try {
@@ -25,6 +40,17 @@ public class Tools {
             System.exit(1);
         }
         return null;
+    }
+
+    public static void slow(int milli){
+        try {
+            Thread.sleep(milli);
+        } catch (Exception e) {
+        }
+    }
+
+    public static void slowRandom(int milliMax){
+        slow((new Random()).nextInt(milliMax));
     }
 
     public static Scanner fileReader(String filename) {
@@ -44,11 +70,12 @@ public class Tools {
         return null;
     }
 
-    public static <T> void listToFile(ArrayList<T> outList, String filename) {
+    public static <T> void listToFile(List<T> outList, String filename) {
         PrintWriter pw = fileWriter(filename);
         for (T obj : outList) {
             pw.println(obj.toString());
         }
+        pw.close();
     }
 
     public static <T> ArrayList<T> fileToObjList(String filename, Class<T> cls) {
@@ -64,5 +91,31 @@ public class Tools {
             System.exit(1);
         }
         return retList;
+    }
+
+    public static ArrayList<String> scannerToStrList(Scanner sc){
+        ArrayList<String> strList = new ArrayList<>();
+        while(sc.hasNextLine())
+            strList.add(sc.nextLine());
+        sc.close();
+        return strList;
+    }
+}
+
+class Pair implements Comparable<Pair> {
+    int index;
+    double score;
+
+    public Pair(int index, double score) {
+        this.index = index;
+        this.score = score;
+    }
+
+    public int compareTo(Pair p) {
+        return this.index - p.index;
+    }
+
+    public String toString() {
+        return String.format("%.1f", this.score);
     }
 }

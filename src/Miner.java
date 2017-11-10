@@ -37,22 +37,25 @@ public class Miner {
     public static String BOTTOM = "---------------------------------------------------------------------\n";
 
     public static void main(String[] args){
+        System.out.println("After Threads: " + Thread.activeCount());
 
-        // stepping();
+        stepping();
+        mine(1);
+        // menu();
 
 
-        HardWorker hw1 = new HardWorker("1");
-        HardWorker hw2 = new HardWorker("2");
-        HardWorker hw3 = new HardWorker("3");
-        HardWorker hw4 = new HardWorker("4");
-        Thread t1 = new Thread(hw1);
-        Thread t2 = new Thread(hw2);
-        Thread t3 = new Thread(hw3);
-        Thread t4 = new Thread(hw4);
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
+        // HardWorker hw1 = new HardWorker("1");
+        // HardWorker hw2 = new HardWorker("2");
+        // HardWorker hw3 = new HardWorker("3");
+        // HardWorker hw4 = new HardWorker("4");
+        // Thread t1 = new Thread(hw1);
+        // Thread t2 = new Thread(hw2);
+        // Thread t3 = new Thread(hw3);
+        // Thread t4 = new Thread(hw4);
+        // t1.start();
+        // t2.start();
+        // t3.start();
+        // t4.start();
     }
 
     public static void stepping(){
@@ -69,6 +72,8 @@ public class Miner {
         timer.lap("Step 5");
         step6();
         timer.lap("Step 6");
+        step7();
+        timer.lap("Step 7");
         timer.time();
         // menu();
     }
@@ -189,11 +194,69 @@ public class Miner {
         sc.close();
     }
 
-    public static void mine()
+    public static void step7()
     {
+        Tools.tittleMaker("TFIDF");
+        ArrayList<HashMap<Integer, Double>> hList = new ArrayList<>();
+        for(Movie movie : movieMap.values())
+        {
+            hList.add(movie.prepTagWeight());
+        }
+        HashSet<Integer> kSet = new HashSet<>(tagMap.keySet());
+        System.out.println("tagCount: " + kSet.size());
+        HashMap<Integer, Double> idfMap = HashTools.<Integer>getIdf(hList, kSet);
+
+        for(Movie movie : movieMap.values())
+        {
+            movie.tfidf(idfMap);
+        }
+    }
+
+    public static void mine(int option)
+    {
+        Tools.tittleMaker("Mining");
+        Timer timer = new Timer();
         Scanner sc = Tools.fileReader(TESTFILE);
         sc.nextLine();
-        String 
+        ArrayList<String> inList = Tools.scannerToStrList(sc);
+        int size = inList.size();
+        ProgressBar pb = new ProgressBar(size);
+        switch (option) {
+            case 1:
+                for (int i = 0; i < size; i++) {
+                    HardWorker hw = new HardWorker(i, inList.get(i));
+                    hw.work();
+                    pb.update(i);
+                }
+                break;
+            case 2:
+                GroupMiner gm1 = new GroupMiner(0, size/2, inList);
+                GroupMiner gm2 = new GroupMiner((size/2)+1, size, inList);
+                Thread t1 = new Thread(gm1);
+                Thread t2 = new Thread(gm2);
+                t1.start();
+                t2.start();
+                System.out.println("Running Threads: " + Thread.activeCount());
+                while(t1.isAlive() && t2.isAlive()){}
+                System.out.println("After Threads: " + Thread.activeCount());
+                break;
+            case 3:
+                for(int i = 0; i < inList.size(); i++)
+                {
+                    HardWorker hw = new HardWorker(i, inList.get(i));
+                    new Thread(hw).start();
+                    pb.update(i);
+                }
+                System.out.println("Running Threads: " + Thread.activeCount());
+                Tools.slow(5000);
+                System.out.println("After Threads: " + Thread.activeCount());
+                break;
+            default:
+                break;
+        }
+        Collections.sort(Tools.syncList);
+        Tools.listToFile(Tools.syncList, "OutFile.txt");
+        timer.time();
     }
 
     public static Director addDirectorMap(String directorId) {

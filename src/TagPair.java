@@ -4,15 +4,15 @@
 public class TagPair implements Comparable<TagPair> {
 
     int tagID;
-    int weight;
+    double weight;
 
-    public TagPair(int tagID, int weight) {
+    public TagPair(int tagID, double weight) {
         this.tagID = tagID;
         this.weight = weight;
     }
 
     public int compareTo(TagPair tp) {
-        return tp.weight - this.weight;
+        return (int)(tp.weight - this.weight);
     }
 
     public boolean equals(TagPair tp) {

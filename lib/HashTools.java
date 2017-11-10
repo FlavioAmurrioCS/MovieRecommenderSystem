@@ -230,8 +230,12 @@ public class HashTools {
         double proSum = 0;
         HashSet<K> union = union(a, b);
         for (K key : union)
-            proSum += a.get(key) * b.get(key);
+            proSum += getValue(a, key)* getValue(b, key);
         return proSum / (aSumSquare * bSumSquare);
+    }
+
+    public static <K> double getValue(HashMap<K, Double> a, K key) {
+        return a.containsKey(key) ? a.get(key) : 0;
     }
 
     public static <K> double jaccardSimilarity(Set<K> a, Set<K> b) {
@@ -299,4 +303,27 @@ public class HashTools {
         return "";
     }
 
+    public static <K> HashMap<K, Double> tf(HashMap<K, Double> hMap) {
+        HashMap<K, Double> ret = new HashMap<>();
+        double sum = sumValues(hMap);
+        if (sum == 0)
+            return ret;
+        return divide(hMap, sum);
+    }
+
+    public static <K> HashMap<K, Double> getIdf(ArrayList<HashMap<K, Double>> dList, HashSet<K> kSet) {
+        HashMap<K, Double> idfMap = new HashMap<>();
+        double totalLines = dList.size();
+        for (K key : kSet) {
+            int sum = 0;
+            for (HashMap<K, Double> hMap : dList) {
+                if (hMap.containsKey(key))
+                    sum++;
+            }
+            double idf = totalLines / (double) sum;
+            idf = Math.log(idf);
+            idfMap.put(key, idf);
+        }
+        return idfMap;
+    }
 }
