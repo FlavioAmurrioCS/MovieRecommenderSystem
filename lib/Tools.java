@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.io.File;
 import java.util.Random;
 import java.util.Collections;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 
 /**
@@ -15,13 +14,6 @@ import java.util.List;
 public class Tools {
 
     public static boolean SHOW_LOG = false;
-
-    // public static ArrayList<Pair> syncList = new ArrayList<>();
-    public static CopyOnWriteArrayList<Pair> syncList = new CopyOnWriteArrayList<Pair>();
-
-    public static synchronized void syncInsert(int index, double score){
-        syncList.add(new Pair(index, score));
-    }
 
     public static void tittleMaker(String str) {
         System.out.println("-----------------------------" + str + "-----------------------------");
@@ -99,23 +91,5 @@ public class Tools {
             strList.add(sc.nextLine());
         sc.close();
         return strList;
-    }
-}
-
-class Pair implements Comparable<Pair> {
-    int index;
-    double score;
-
-    public Pair(int index, double score) {
-        this.index = index;
-        this.score = score;
-    }
-
-    public int compareTo(Pair p) {
-        return this.index - p.index;
-    }
-
-    public String toString() {
-        return String.format("%.1f", this.score);
     }
 }

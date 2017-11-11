@@ -36,6 +36,7 @@ public class HardWorker implements Runnable {
         //     score = user.predictRating(movieID);
         // }
         score = user.predictRating(movieID);
-        Tools.syncInsert(this.index, score);
+
+        Miner.pTracker.add(this.index, score);
     }
 }

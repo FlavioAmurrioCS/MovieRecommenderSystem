@@ -1,7 +1,3 @@
-
-/**
- * Miner
- */
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -10,18 +6,24 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Miner
+ */
+
 public class Miner {
 
-    public static final String TESTFILE = "./res/additional_files/test.dat"; //userID,movieID  75,653
-    public static final String TRAINFILE = "./res/additional_files/train.dat"; //userID,movieID,rating 75,3,1
+    public static final String RES_FOLDER = "./res/additional_files/";
 
-    public static final String MOVIE_DIRECTORS_FILE = "./res/additional_files/movie_directors.dat"; //movieID,directorID,directorName  1,john_lasseter,John Lasseter
-    public static final String MOVIE_GENRES_FILE = "./res/additional_files/movie_genres.dat"; //movieID,genre  1,Adventure
-    public static final String MOVIE_ACTORS_FILE = "./res/additional_files/movie_actors.dat"; //movieID,actorID,actorName,ranking  1,annie_potts,Annie Potts, 10
-    public static final String MOVIE_TAGS_FILE = "./res/additional_files/movie_tags.dat"; //movieID,tagID,tagWeight   1,7,1
-    public static final String TAGS_FILE = "./res/additional_files/tags.dat"; //id,value   1,earth
+    public static final String TESTFILE = RES_FOLDER + "test.dat";
+    public static final String TRAINFILE = RES_FOLDER + "train.dat";
 
-    public static final String USER_TAGGED_MOVIES_FILE = "./res/additional_files/user_taggedmovies.dat"; //userID,movieID,tagID    75,353,5290
+    public static final String MOVIE_DIRECTORS_FILE = RES_FOLDER + "movie_directors.dat";
+    public static final String MOVIE_GENRES_FILE = RES_FOLDER + "movie_genres.dat";
+    public static final String MOVIE_ACTORS_FILE = RES_FOLDER + "movie_actors.dat";
+    public static final String MOVIE_TAGS_FILE = RES_FOLDER + "movie_tags.dat";
+    public static final String TAGS_FILE = RES_FOLDER + "tags.dat";
+
+    public static final String USER_TAGGED_MOVIES_FILE = RES_FOLDER + "user_taggedmovies.dat";
 
     public static HashMap<Integer, Movie> movieMap = new HashMap<>(13600);
     public static HashMap<String, Director> directorMap = new HashMap<>(5450);
@@ -33,29 +35,15 @@ public class Miner {
 
     public static ArrayList<User> testList = new ArrayList<>();
 
+    public static PairTracker<Double> pTracker = new PairTracker<>();
+
     public static String TOP = "\n---------------------------------------------------------------------\n";
     public static String BOTTOM = "---------------------------------------------------------------------\n";
 
     public static void main(String[] args){
-        System.out.println("After Threads: " + Thread.activeCount());
-
         stepping();
-        mine(1);
+        mine(99);
         // menu();
-
-
-        // HardWorker hw1 = new HardWorker("1");
-        // HardWorker hw2 = new HardWorker("2");
-        // HardWorker hw3 = new HardWorker("3");
-        // HardWorker hw4 = new HardWorker("4");
-        // Thread t1 = new Thread(hw1);
-        // Thread t2 = new Thread(hw2);
-        // Thread t3 = new Thread(hw3);
-        // Thread t4 = new Thread(hw4);
-        // t1.start();
-        // t2.start();
-        // t3.start();
-        // t4.start();
     }
 
     public static void stepping(){
@@ -194,8 +182,7 @@ public class Miner {
         sc.close();
     }
 
-    public static void step7()
-    {
+    public static void step7() {
         Tools.tittleMaker("TFIDF");
         ArrayList<HashMap<Integer, Double>> hList = new ArrayList<>();
         for(Movie movie : movieMap.values())
@@ -212,8 +199,7 @@ public class Miner {
         }
     }
 
-    public static void mine(int option)
-    {
+    public static void mine(int option) {
         Tools.tittleMaker("Mining");
         Timer timer = new Timer();
         Scanner sc = Tools.fileReader(TESTFILE);
@@ -240,22 +226,19 @@ public class Miner {
                 while(t1.isAlive() && t2.isAlive()){}
                 System.out.println("After Threads: " + Thread.activeCount());
                 break;
-            case 3:
+            default:
                 for(int i = 0; i < inList.size(); i++)
                 {
                     HardWorker hw = new HardWorker(i, inList.get(i));
                     new Thread(hw).start();
                     pb.update(i);
+                    while(Thread.activeCount() > option){}
                 }
-                System.out.println("Running Threads: " + Thread.activeCount());
-                Tools.slow(5000);
-                System.out.println("After Threads: " + Thread.activeCount());
-                break;
-            default:
                 break;
         }
-        Collections.sort(Tools.syncList);
-        Tools.listToFile(Tools.syncList, "OutFile.txt");
+        while(Thread.activeCount() > 1){}
+        System.out.println("After Threads: " + Thread.activeCount());
+        pTracker.toFile("newFileYes.txt");
         timer.time();
     }
 

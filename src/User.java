@@ -46,19 +46,19 @@ public class User {
         return simMovie != -1 ? movieMap.get(simMovie) : this.avgRating;
     }
 
-    public double kRating(int movieID) {
-        Movie pMovie = Miner.movieMap.get(movieID);
-        for (Integer key : movieMap.keySet()) {
-            Movie mov = Miner.movieMap.get(key);
-            double score = pMovie.similarity(mov);
-            if (score > maxScore) {
-                maxScore = score;
-                simMovie = key;
-            }
-        }
-        // if (simMovie == -1)
-        //     System.out.println("movie not found");
-        // Movie m = Miner.movieMap.get(simMovie);
-        return simMovie != -1 ? movieMap.get(simMovie) : this.avgRating;
-    }
+    // public double kRating(int movieID) {
+    //     Movie pMovie = Miner.movieMap.get(movieID);
+    //     for (Integer key : movieMap.keySet()) {
+    //         Movie mov = Miner.movieMap.get(key);
+    //         double score = pMovie.similarity(mov);
+    //         if (score > maxScore) {
+    //             maxScore = score;
+    //             simMovie = key;
+    //         }
+    //     }
+    //     // if (simMovie == -1)
+    //     //     System.out.println("movie not found");
+    //     // Movie m = Miner.movieMap.get(simMovie);
+    //     return simMovie != -1 ? movieMap.get(simMovie) : this.avgRating;
+    // }
 }

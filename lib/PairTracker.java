@@ -1,36 +1,43 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * PairTracker
  */
 public class PairTracker<K> {
 
-    ArrayList<Pair<K>> pList = new ArrayList<>();
+    List<Pair<K>> pList;
 
     public PairTracker() {
+        this.pList = Collections.synchronizedList(new ArrayList<Pair<K>>());
     }
 
     public synchronized void add(int index, K item) {
-        pList.add(new Pair<K>(index, item));
+        Pair<K> p = new Pair<>(index, item);
+        pList.add(p);
     }
 
-    public ArrayList<Pair> getOrderList() {
+    public List<Pair<K>> getOrderList() {
         Collections.sort(pList);
-        return new ArrayList<>(pList);
+        return pList;
+    }
+
+    public void toFile(String filename) {
+        Tools.listToFile(getOrderList(), filename);
     }
 }
 
-private class Pair<K> implements Comparable<Pair<K>> {
+class Pair<V> implements Comparable<Pair<V>> {
     int index;
-    K item;
+    V item;
 
-    public Pair(int index, K item) {
+    public Pair(int index, V item) {
         this.index = index;
         this.item = item;
     }
 
-    public int compareTo(Pair p) {
+    public int compareTo(Pair<V> p) {
         return this.index - p.index;
     }
 
